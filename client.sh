@@ -18,7 +18,7 @@ if [ $ng -eq 1 ]; then
     exit 0
 fi
 
-if [[ $CA_CERT != "" ]; then
+if [[ $CA_CERT != "" ]]; then
     echo $CA_CERT > /usr/local/share/ca-certificates/root_ca.crt
     update-ca-certificates
 else
