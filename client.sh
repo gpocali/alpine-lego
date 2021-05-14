@@ -18,11 +18,11 @@ if [ $ng -eq 1 ]; then
     exit 0
 fi
 
-if [[ "$CA_CERT" != "" ]]; then
-    echo "$CA_CERT" > /usr/local/share/ca-certificates/root_ca.crt
+if [ -e /ca_cert/ca.crt ]; then
+    cp -f /ca_cert/ca.crt /usr/local/share/ca-certificates/root_ca.crt
     update-ca-certificates
 else
-    echo CA Certificate must be set in variable CA_CERT
+    echo CA Certificate must be located at /ca_cert/ca.crt.
     exit 0
 fi
 
