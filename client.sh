@@ -34,15 +34,19 @@ else
     exit 0
 fi
 
+if [ ! -e /ca_cert/cert ]; then
+    mkdir /ca_cert/cert
+fi
+
 echo $(date) - Starting... | tee -a /tmp/legoLog
 domain=$(nslookup $(ifconfig $(route | grep default | awk '{print $8}') | grep "inet addr" | awk '{print $2}' | cut -d: -f2) | grep name | awk '{print $4}')
 certServer=$CERT_SERVER
 email=$EMAIL
 if [[ $1 != "firstStart" ]]; then
-    lego -s "$certServer" -a -m "$email" --path /tmp/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 renew | tee -a /tmp/legoLog
+    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 renew | tee -a /tmp/legoLog
 else
     echo $(date) - Attempting first time registration...
-    lego -s "$certServer" -a -m "$email" --path /tmp/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 run | tee -a /tmp/legoLog
+    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 run | tee -a /tmp/legoLog
 fi
 cat /tmp/cert/certificates/$domain.crt > /output/$OUTPUT_FILE
 cat /tmp/cert/certificates/$domain.key >> /output/$OUTPUT_FILE

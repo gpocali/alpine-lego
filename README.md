@@ -13,5 +13,5 @@
 - Port 1885 - Used to validate the host from the CA server
 - /output   - The output location of the issued certificate as a PEM file
  -- This contains the server certificate and private key in the output file
-- /ca_cert/ca.crt - CA Certificate for the ACME server
+- /ca_cert - CA Certificate for the ACME server and Lego Persistent Directory
  
