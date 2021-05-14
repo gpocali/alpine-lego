@@ -38,8 +38,9 @@ echo $(date) - Starting... | tee -a /tmp/legoLog
 domain=$(nslookup $(ifconfig $(route | grep default | awk '{print $8}') | grep "inet addr" | awk '{print $2}' | cut -d: -f2) | grep name | awk '{print $4}')
 certServer=$CERT_SERVER
 email=$EMAIL
-lego -s "$certServer" -a -m "$email" --path /tmp/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 renew | tee -a /tmp/legoLog
-if [ $? -ne 0 ]; then
+if [[ $1 != "firstStart" ]]; then
+    lego -s "$certServer" -a -m "$email" --path /tmp/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 renew | tee -a /tmp/legoLog
+else
     echo $(date) - Attempting first time registration...
     lego -s "$certServer" -a -m "$email" --path /tmp/cert -d "$domain" --http.webroot "/tmp/lego" --http.port 1085 --http --tls --http-timeout 10 run | tee -a /tmp/legoLog
 fi
