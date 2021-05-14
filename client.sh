@@ -5,11 +5,11 @@ if [ ! -e /tmp/lego ]; then
     mkdir /tmp/lego
 fi
 ng=0
-if [[ $CERT_SERVER == "" ]]; then
+if [[ "$CERT_SERVER" == "" ]]; then
     echo Enter the Certificate Server Address in variable CERT_SERVER
     ng=1
 fi
-if [[ $EMAIL == "" ]]; then
+if [[ "$EMAIL" == "" ]]; then
     echo Enter the registration email in variable EMAIL
     ng=1
 fi
@@ -18,8 +18,8 @@ if [ $ng -eq 1 ]; then
     exit 0
 fi
 
-if [[ $CA_CERT != "" ]]; then
-    echo $CA_CERT > /usr/local/share/ca-certificates/root_ca.crt
+if [[ "$CA_CERT" != "" ]]; then
+    echo "$CA_CERT" > /usr/local/share/ca-certificates/root_ca.crt
     update-ca-certificates
 else
     echo CA Certificate must be set in variable CA_CERT
