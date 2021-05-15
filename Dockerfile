@@ -10,9 +10,6 @@ RUN chmod 775 /bin/client.sh
 COPY ./lego /etc/crontabs/lego
 RUN chmod 600 /etc/crontabs/lego
 
-# EXPOSE PORT FOR LEGO CHALLENGE
-EXPOSE 1885
-
 # Expose Output Folder
 VOLUME /output /tmp/lego
 

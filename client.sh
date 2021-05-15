@@ -4,7 +4,7 @@
 if [ ! -e /tmp/lego ]; then
     mkdir /tmp/lego
 fi
-if [[ $1 == "firstStart" ]]; then
+if [[ "$1" == "firstStart" ]]; then
     echo -n $(date) - First Start... | tee -a /tmp/legoLog
     crond -b -l 8 -c /etc/crontabs
 fi
@@ -43,10 +43,10 @@ domain=$(nslookup $(ifconfig $(route | grep default | awk '{print $8}') | grep "
 certServer=$CERT_SERVER
 email=$EMAIL
 if [[ "$1" != "firstStart" ]]; then
-    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --http.webroot "/tmp/lego" --http --http-timeout 10 renew | tee -a /tmp/legoLog
+    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --tls --http-timeout 10 renew | tee -a /tmp/legoLog
 else
     echo $(date) - Attempting first time registration...
-    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --http.webroot "/tmp/lego" --http --http-timeout 10 run | tee -a /tmp/legoLog
+    lego -s "$certServer" -a -m "$email" --path /ca_cert/cert -d "$domain" --tls --http --http-timeout 10 run | tee -a /tmp/legoLog
 fi
 cat /ca_cert/cert/certificates/$domain.crt > /output/$OUTPUT_FILE
 cat /ca_cert/cert/certificates/$domain.key >> /output/$OUTPUT_FILE

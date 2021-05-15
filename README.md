@@ -15,17 +15,17 @@
 - /ca_cert - CA Certificate for the ACME server and Lego Persistent Directory
  
 ## Unraid Specific Settings
-```if [[ "$USE_SSL" = "yes" ]]; then
-    ORIGIN="https://$HOSTSSL:$PORTSSL"
-    cat <<- EOF >> $EMHTTP
-        server {
-            #
+```vi /etc/rc.d/rc.nginx```
+
+```			#
             # Redirect http requests to https
             #
             listen $IPV4:$PORT default_server;
             listen [$IPV6]:$PORT default_server;
-            location (?!well-known).* { return 302 $ORIGIN\$request_uri; } <----
-        }
+            location ^~ /.well-known/ {
+                try_files   /$request_uri =404;
+            }
+            return 302 $ORIGIN\$request_uri;
 ```
 		
 ```			#
@@ -35,3 +35,8 @@
                 return 404;
             }
 ```
+
+```/etc/rc.d/rc.nginx reload```
+
+### Certificate Location
+```/boot/config/ssl/certs/certificate_bundle.pem```
