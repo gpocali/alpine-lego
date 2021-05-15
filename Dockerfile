@@ -14,6 +14,6 @@ RUN chmod 600 /etc/crontabs/lego
 EXPOSE 1885
 
 # Expose Output Folder
-VOLUME /output
+VOLUME /output /tmp/lego
 
 ENTRYPOINT ["/bin/client.sh", "firstStart"]
