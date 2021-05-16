@@ -2,7 +2,7 @@ FROM alpine:latest
 
 USER root
 
-RUN apk add --no-cache lego ca-certificates dcron
+RUN apk add --no-cache lego ca-certificates dcron tzdata
 
 COPY ./client.sh /bin/client.sh
 RUN chmod 775 /bin/client.sh

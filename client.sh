@@ -1,6 +1,22 @@
 #!/bin/ash
 ## LEGO CA Certificate Request
 
+# TZ SET - Requires tzdata package
+if [[ "$TZ" == "" ]]; then
+    echo timezone not defined using ENV 'TZ', using UTC.
+    TIMEZONE=UTC
+else
+    if [ -e /usr/share/zoneinfo/$TZ ]; then
+        echo Using timezone: $TZ
+        TIMEZONE=$TZ
+    else
+        echo Invalid timezone defined in input.conf file, using UTC.
+        TIMEZONE=UTC
+    fi
+fi
+cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+echo $TIMEZONE >  /etc/timezone
+
 if [ ! -e /tmp/lego ]; then
     mkdir /tmp/lego
 fi
@@ -51,6 +67,8 @@ fi
 cat /ca_cert/cert/certificates/$domain.crt > /output/$OUTPUT_FILE
 cat /ca_cert/cert/certificates/$domain.key >> /output/$OUTPUT_FILE
 echo -e "$(date) - Finished...\n\n" | tee -a /tmp/legoLog
+
+echo "######## Starting Log Monitor ##########"
 
 tail -f /tmp/legoLog
 
