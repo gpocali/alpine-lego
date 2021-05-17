@@ -22,7 +22,6 @@ if [ ! -e /tmp/lego ]; then
 fi
 if [[ "$1" == "firstStart" ]]; then
     echo -n $(date) - First Start... | tee -a /tmp/legoLog
-    crond -b -l 8 -c /etc/crontabs
 fi
 ng=0
 if [[ "$CERT_SERVER" == "" ]]; then
@@ -68,8 +67,10 @@ cat /ca_cert/cert/certificates/$domain.crt > /output/$OUTPUT_FILE
 cat /ca_cert/cert/certificates/$domain.key >> /output/$OUTPUT_FILE
 echo -e "$(date) - Finished...\n\n" | tee -a /tmp/legoLog
 
-echo "######## Starting Log Monitor ##########"
-
-tail -f /tmp/legoLog
+if [[ "$1" == "firstStart" ]]; then
+    crond -b -c /etc/crontabs -L /tmp/legoLog
+    echo "######## Starting Log Monitor ##########"
+    tail -f /tmp/legoLog
+fi
 
 exit 0
