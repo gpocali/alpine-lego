@@ -68,7 +68,7 @@ cat /ca_cert/cert/certificates/$domain.key >> /output/$OUTPUT_FILE
 echo -e "$(date) - Finished...\n\n" | tee -a /tmp/legoLog
 
 if [[ "$1" == "firstStart" ]]; then
-    crond -b -c /etc/crontabs -L /tmp/legoLog
+    crond -b -L /tmp/legoLog
     echo "######## Starting Log Monitor ##########"
     tail -f /tmp/legoLog
 fi
