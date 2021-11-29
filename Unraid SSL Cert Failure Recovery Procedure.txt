@@ -1,0 +1,19 @@
+# UNRAID SSL CERT FAILURE RECOVERY PROCEDURE
+
+# Login through SSH
+
+# Remove all certs
+rm /boot/config/ssl/certs/*
+
+# Set AUTO_SSL to no
+vi /boot/config/ident.cfg
+
+# Restart NGINX
+/etc/rc.d/rc.nginx stop
+/etc/rc.d/rc.nginx start
+
+# Set AUTO_SSL to yes
+vi /boot/config/ident.cfg
+
+# Restart NGINX
+/etc/rc.d/rc.nginx restart

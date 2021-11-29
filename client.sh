@@ -54,7 +54,7 @@ if [ ! -e /ca_cert/cert ]; then
 fi
 
 echo $(date) - Starting... | tee -a /tmp/legoLog
-domain=$(nslookup $(ifconfig $(route | grep default | awk '{print $8}') | grep "inet addr" | awk '{print $2}' | cut -d: -f2) | grep name | awk '{print $4}')
+domain=$(nslookup $(ifconfig $(route | grep default | awk '{print $8}' | head -n 1) | grep "inet addr" | awk '{print $2}' | cut -d: -f2) | grep name | awk '{print $4}')
 certServer=$CERT_SERVER
 email=$EMAIL
 if [[ "$1" != "firstStart" ]]; then
